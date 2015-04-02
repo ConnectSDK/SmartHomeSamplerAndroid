@@ -26,6 +26,9 @@ import android.support.v4.app.Fragment;
 
 import com.connectsdk.smarthomesampler.adapter.BeaconAdapter;
 
+import java.math.BigInteger;
+import java.util.UUID;
+
 public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter.ScannedBleDevice> implements BeaconAdapter.BeaconUpdate {
 
     private BeaconAdapter beaconAdapter;
@@ -76,7 +79,7 @@ public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter
 
     @Override
     String getDeviceName(BeaconAdapter.ScannedBleDevice device) {
-        return (device.deviceName == null ? "" : device.deviceName) + " [" + device.macAddress + "]";
+        return device.uuid + " [" + device.macAddress + "]";
     }
 
     @Override

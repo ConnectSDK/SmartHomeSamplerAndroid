@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -156,6 +157,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         public double RSSI;
         public double distance;
 
+        public String uuid;
         public byte[] companyId;
         public byte[] ibeaconProximityUUID;
         public byte[] major;
@@ -185,7 +187,11 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
     private ScannedBleDevice parseRawScanRecord(BluetoothDevice device, int rssi, byte[] advertisedData) {
         try {
             ScannedBleDevice parsedObj = new ScannedBleDevice();
+Log.d("", "BEACON " + new BigInteger(1, advertisedData).toString(16));
+            /*
+            201061aff4c00021588889999aaaabbbbccccddddeeeeffff00000000ae0302041800000000000000000000000000000000000000000000000000000000
 
+             */
             parsedObj.deviceName = device.getName();
             parsedObj.macAddress = device.getAddress();
             parsedObj.RSSI = rssi;
@@ -210,6 +216,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
             }
 
             parsedObj.ibeaconProximityUUID = ibeaconProximityUUID;
+            parsedObj.uuid = byteArrayToHex(ibeaconProximityUUID);
 
             byte[] major = new byte[2];
             major[0] = magic.get(22);
@@ -230,6 +237,13 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private String byteArrayToHex(byte[] a) {
+        StringBuilder sb = new StringBuilder(a.length * 2);
+        for(byte b: a)
+            sb.append(String.format("%02x", b & 0xff));
+        return sb.toString();
     }
 
     private double getDistance(int rssi, int txPower) {

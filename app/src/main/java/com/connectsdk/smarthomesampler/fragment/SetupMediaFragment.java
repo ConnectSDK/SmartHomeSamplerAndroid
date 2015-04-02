@@ -24,10 +24,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.connectsdk.device.ConnectableDevice;
+import com.connectsdk.discovery.CapabilityFilter;
 import com.connectsdk.discovery.DiscoveryManager;
 import com.connectsdk.discovery.DiscoveryManagerListener;
+import com.connectsdk.service.DLNAService;
+import com.connectsdk.service.WebOSTVService;
 import com.connectsdk.service.command.ServiceCommandError;
 import com.connectsdk.smarthomesampler.scene.SceneConfig;
+
+import java.util.Collection;
+import java.util.List;
 
 public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDevice> implements DiscoveryManagerListener {
 
@@ -55,7 +61,13 @@ public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDev
     void startDeviceDiscovery() {
         DiscoveryManager.getInstance().addListener(this);
         DiscoveryManager.getInstance().start();
-        updateData(DiscoveryManager.getInstance().getAllDevices().values());
+        Collection<ConnectableDevice> devices = DiscoveryManager.getInstance().getAllDevices().values();
+        for (ConnectableDevice connectableDevice : devices) {
+            if (connectableDevice.getServiceByName(WebOSTVService.ID) != null
+                    || connectableDevice.getServiceByName(DLNAService.ID) != null) {
+                updateData(connectableDevice);
+            }
+        }
     }
 
     @Override
@@ -92,12 +104,18 @@ public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDev
 
     @Override
     public void onDeviceAdded(DiscoveryManager discoveryManager, ConnectableDevice connectableDevice) {
-        updateData(connectableDevice);
+        if (connectableDevice.getServiceByName(WebOSTVService.ID) != null
+            || connectableDevice.getServiceByName(DLNAService.ID) != null) {
+            updateData(connectableDevice);
+        }
     }
 
     @Override
     public void onDeviceUpdated(DiscoveryManager discoveryManager, ConnectableDevice connectableDevice) {
-
+        if (connectableDevice.getServiceByName(WebOSTVService.ID) != null
+                || connectableDevice.getServiceByName(DLNAService.ID) != null) {
+            updateData(connectableDevice);
+        }
     }
 
     @Override

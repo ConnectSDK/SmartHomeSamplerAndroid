@@ -52,16 +52,22 @@
             android:text="@string/wake_up"/>
         
         <Button
+            android:id="@+id/buttonHold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hold"/>
+
+        <Button
             android:id="@+id/buttonStop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/stop"/>
 
         <Button
-            android:id="@+id/buttonDisconnect"
+            android:id="@+id/buttonConfigure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/disconnect"/>
+            android:text="@string/configure"/>
 
         <TextView
             android:id="@+id/textViewDebug"

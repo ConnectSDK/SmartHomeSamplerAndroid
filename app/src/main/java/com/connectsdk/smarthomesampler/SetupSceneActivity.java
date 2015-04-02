@@ -31,6 +31,7 @@ import com.connectsdk.device.ConnectableDevice;
 import com.connectsdk.service.DLNAService;
 import com.connectsdk.service.WebOSTVService;
 import com.connectsdk.smarthomesampler.adapter.BeaconAdapter;
+import com.connectsdk.smarthomesampler.dialog.MessageFragmentDialog;
 import com.connectsdk.smarthomesampler.fragment.SetupBeaconFragment;
 import com.connectsdk.smarthomesampler.fragment.SetupHueFragment;
 import com.connectsdk.smarthomesampler.fragment.SetupMediaFragment;
@@ -69,6 +70,7 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
         loadSceneConfig();
         viewPager.setAdapter(new SetupAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(pages.length);
+        getSupportActionBar().setTitle(getString(R.string.configure) + " " + id);
     }
 
     private void loadSceneConfig() {
@@ -115,7 +117,11 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
     public void saveWinkDevice(List<String> bulbs) {
         sceneConfig.winkBulbs = bulbs;
         sceneConfig.saveToPreferences(this, id);
-        finish();
+        if (sceneConfig.isConfigured()) {
+            finish();
+        } else {
+            MessageFragmentDialog.newInstance("Scene is not configured", "Please select one media device and at least one bulb to finish configuration.").show(getSupportFragmentManager(), "msg_dialog");
+        }
     }
 
     private class SetupAdapter extends FragmentPagerAdapter {

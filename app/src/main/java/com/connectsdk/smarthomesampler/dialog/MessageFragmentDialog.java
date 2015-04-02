@@ -33,27 +33,28 @@ import android.widget.TextView;
 
 import com.connectsdk.smarthomesampler.R;
 
-public class InfoFragmentDialog extends DialogFragment {
+public class MessageFragmentDialog extends DialogFragment {
 
-    public static InfoFragmentDialog newInstance() {
-        return new InfoFragmentDialog();
+    public static final String ARG_MESSAGE = "message";
+    private static final java.lang.String ARG_TITLE = "title";
+
+    public static MessageFragmentDialog newInstance(String title, String message) {
+        MessageFragmentDialog fragment = new MessageFragmentDialog();
+        Bundle args = new Bundle();
+        args.putString(ARG_TITLE, title);
+        args.putString(ARG_MESSAGE, message);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Context context = getActivity();
-        final TextView message = new TextView(context);
-        message.setText(Html.fromHtml(context.getString(R.string.info_message)));
-        message.setMovementMethod(LinkMovementMethod.getInstance());
-        int padding = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, context.getResources().getDisplayMetrics());
-        message.setPadding(padding, 0, padding, 0);
-        ScrollView scrollView  = new ScrollView(context);
-        scrollView.addView(message);
-
+        Bundle args = getArguments();
         return new AlertDialog.Builder(context)
-                .setTitle(R.string.info_title)
-                .setView(scrollView)
+                .setTitle(args.getString(ARG_TITLE))
+                .setMessage(args.getString(ARG_MESSAGE))
                 .setCancelable(true)
                 .create();
     }

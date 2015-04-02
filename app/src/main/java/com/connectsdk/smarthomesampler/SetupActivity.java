@@ -21,9 +21,11 @@
 package com.connectsdk.smarthomesampler;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.connectsdk.smarthomesampler.scene.SceneConfig;
 import com.connectsdk.smarthomesampler.scene.SceneController;
@@ -41,6 +43,12 @@ public class SetupActivity extends ActionBarActivity {
     @InjectView(R.id.btnDone)
     Button btnDone;
 
+    @InjectView(R.id.textViewScene1State)
+    TextView textViewScene1Scene;
+
+    @InjectView(R.id.textViewScene2State)
+    TextView textViewScene2Scene;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,26 @@ public class SetupActivity extends ActionBarActivity {
         setContentView(R.layout.activity_setup);
         ButterKnife.inject(this);
         btnDone.setEnabled(forceSetup);
+
+        updateScenesState();
+    }
+
+    private void updateScenesState() {
+        if (isFirstSceneConfigured()) {
+            textViewScene1Scene.setText(R.string.configured);
+            textViewScene1Scene.setTextColor(Color.rgb(0x0, 0x99, 0x0));
+        } else {
+            textViewScene1Scene.setText(R.string.not_configured);
+            textViewScene1Scene.setTextColor(Color.rgb(0x99, 0x00, 0x0));
+        }
+
+        if (isSecondSceneConfigured()) {
+            textViewScene2Scene.setText(R.string.configured);
+            textViewScene2Scene.setTextColor(Color.rgb(0x0, 0x99, 0x0));
+        } else {
+            textViewScene2Scene.setText(R.string.not_configured);
+            textViewScene2Scene.setTextColor(Color.rgb(0x99, 0x00, 0x0));
+        }
     }
 
     private void openMainActivityIfConfigured() {
@@ -64,9 +92,8 @@ public class SetupActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SETUP_SCENE) {
-            if (isSetUp()) {
-                btnDone.setEnabled(true);
-            }
+            btnDone.setEnabled(isSetUp());
+            updateScenesState();
         }
     }
 
@@ -76,8 +103,15 @@ public class SetupActivity extends ActionBarActivity {
     }
 
     public boolean isSetUp() {
-        return SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_FIRST).isConfigured()
-                && SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_SECOND).isConfigured();
+        return isFirstSceneConfigured() && isSecondSceneConfigured();
+    }
+
+    private boolean isFirstSceneConfigured() {
+        return SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_FIRST).isConfigured();
+    }
+
+    private boolean isSecondSceneConfigured() {
+        return SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_SECOND).isConfigured();
     }
 
     @OnClick(R.id.btnSceneOne)

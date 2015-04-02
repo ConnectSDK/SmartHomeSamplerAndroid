@@ -41,7 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.connectsdk.smarthomesampler.dialog.InfoFragmentDialog;
+import com.connectsdk.smarthomesampler.dialog.AcknowledgementsFragmentDialog;
 import com.connectsdk.smarthomesampler.scene.SceneController;
 
 import butterknife.ButterKnife;
@@ -159,13 +159,7 @@ public class MainActivity extends ActionBarActivity implements IUserNotification
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_license:
-                InfoFragmentDialog.newInstance().show(getSupportFragmentManager(), "info_dialog");
-                break;
-            case R.id.action_configure:
-                Intent intent = new Intent(this, SetupActivity.class);
-                intent.putExtra(SetupActivity.EXTRA_FORCE, true);
-                startActivity(intent);
-                disconnectSceneController();
+                AcknowledgementsFragmentDialog.newInstance().show(getSupportFragmentManager(), "info_dialog");
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -194,15 +188,24 @@ public class MainActivity extends ActionBarActivity implements IUserNotification
         listenToSpeech();
     }
 
-    @OnClick(R.id.buttonStop)
+    @OnClick(R.id.buttonHold)
     public void onStopClick() {
         if (mService != null) {
             mService.stop();
         }
     }
 
-    @OnClick(R.id.buttonDisconnect)
+    @OnClick(R.id.buttonStop)
     public void onDisconnectClick() {
+        disconnectSceneController();
+    }
+
+
+    @OnClick(R.id.buttonConfigure)
+    public void onConfigureClick() {
+        Intent intent = new Intent(this, SetupActivity.class);
+        intent.putExtra(SetupActivity.EXTRA_FORCE, true);
+        startActivity(intent);
         disconnectSceneController();
     }
 
