@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class SceneConfig {
 
-    public List<DeviceConfig> devices;
+    public final List<DeviceConfig> devices;
     
     public List<String> bulbs;
     
@@ -40,7 +40,7 @@ public class SceneConfig {
     
     public List<String> winkBulbs;
 
-    public String sceneName;
+    public final String sceneName;
 
     public String beacon;
 
@@ -89,7 +89,13 @@ public class SceneConfig {
                 winkBulbs.add(item);
             }
         }
-        return new SceneConfig(id, devices, bulbs, wemos, winkBulbs);
+
+        SceneConfig config = new SceneConfig(id, devices, bulbs, wemos, winkBulbs);
+
+        String ibeacon = pref.getString("ibeacon", "");
+        config.beacon = ibeacon;
+
+        return config;
     }
 
     public void saveToPreferences(Context context, String id) {
@@ -118,6 +124,7 @@ public class SceneConfig {
             winkSet.add(item);
         }
         editor.putStringSet("winks", winkSet);
+        editor.putString("ibeacon", beacon);
         editor.apply();
     }
 

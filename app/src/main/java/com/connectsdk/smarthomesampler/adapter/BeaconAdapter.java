@@ -41,7 +41,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
 
     private double prevDistance = 100;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private final Runnable stopRunnable = new Runnable() {
         @Override
@@ -75,6 +75,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         this.listener = listener;
     }
 
+    @SuppressWarnings("deprecation")
     public void startScan() {
         if (btAdapter.isEnabled()) {
             try {
@@ -91,11 +92,13 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void stop() {
         btAdapter.stopLeScan(this);
         handler.postDelayed(startRunnable, 300);
     }
 
+    @SuppressWarnings("deprecation")
     public void stopScan() {
         handler.removeCallbacks(startRunnable);
         handler.removeCallbacks(stopRunnable);
@@ -118,7 +121,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         Log.d("", "BTSERV " + device.getAddress() + " " + rssi + " " + device.getName());
         ScannedBleDevice info = parseRawScanRecord(device, rssi, scanRecord);
         if (info != null) {
-            Log.d("", "BTSERV " + info.Tx + " " + info.Distance);
+            Log.d("", "BTSERV " + info.tx + " " + info.distance);
             devices.put(device.getAddress(), info);
 
             if (listener != null) {
@@ -129,8 +132,8 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         ScannedBleDevice closest = null;
         double min = Double.MAX_VALUE;
         for (ScannedBleDevice d : devices.values()) {
-            if (min > d.Distance) {
-                min = d.Distance;
+            if (min > d.distance) {
+                min = d.distance;
                 closest = d;
             }
         }
@@ -138,36 +141,53 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         if (closest != null) {
             Log.d("", "scene beacon closests yes ");
             if (listener != null
-                    && Math.abs(prevDistance - closest.Distance) < 1.2 && closest.Distance < 1.8) {
+                    && Math.abs(prevDistance - closest.distance) < 1.2 && closest.distance < 1.8) {
                 listener.onClosestBeacon(closest);
             }
 
-            prevDistance = closest.Distance;
+            prevDistance = closest.distance;
         }
     }
 
     public static class ScannedBleDevice implements Serializable {
-        public String MacAddress;
+        public String macAddress;
 
-        public String DeviceName;
+        public String deviceName;
         public double RSSI;
-        public double Distance;
+        public double distance;
 
-        public byte[] CompanyId;
-        public byte[] IbeaconProximityUUID;
-        public byte[] Major;
-        public byte[] Minor;
-        public byte Tx;
+        public byte[] companyId;
+        public byte[] ibeaconProximityUUID;
+        public byte[] major;
+        public byte[] minor;
+        public byte tx;
 
-        public long ScannedTime;
+        public long scannedTime;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ScannedBleDevice that = (ScannedBleDevice) o;
+
+            if (!macAddress.equals(that.macAddress)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return macAddress.hashCode();
+        }
     }
 
     private ScannedBleDevice parseRawScanRecord(BluetoothDevice device, int rssi, byte[] advertisedData) {
         try {
             ScannedBleDevice parsedObj = new ScannedBleDevice();
 
-            parsedObj.DeviceName = device.getName();
-            parsedObj.MacAddress = device.getAddress();
+            parsedObj.deviceName = device.getName();
+            parsedObj.macAddress = device.getAddress();
             parsedObj.RSSI = rssi;
 
             int skippedByteCount = advertisedData[0];
@@ -182,30 +202,30 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
             byte[] companyId = new byte[2];
             companyId[0] = magic.get(2);
             companyId[1] = magic.get(3);
-            parsedObj.CompanyId = companyId;
+            parsedObj.companyId = companyId;
 
             byte[] ibeaconProximityUUID = new byte[16];
             for (int i = 0; i < 16; i++) {
                 ibeaconProximityUUID[i] = magic.get(i + 6);
             }
 
-            parsedObj.IbeaconProximityUUID = ibeaconProximityUUID;
+            parsedObj.ibeaconProximityUUID = ibeaconProximityUUID;
 
             byte[] major = new byte[2];
             major[0] = magic.get(22);
             major[1] = magic.get(23);
-            parsedObj.Major = major;
+            parsedObj.major = major;
 
             byte[] minor = new byte[2];
             minor[0] = magic.get(24);
             minor[1] = magic.get(25);
-            parsedObj.Minor = minor;
+            parsedObj.minor = minor;
 
             byte tx;
             tx = magic.get(26);
-            parsedObj.Tx = tx;
-            parsedObj.Distance = getDistance(rssi, tx);
-            parsedObj.ScannedTime = new Date().getTime();
+            parsedObj.tx = tx;
+            parsedObj.distance = getDistance(rssi, tx);
+            parsedObj.scannedTime = new Date().getTime();
             return parsedObj;
         } catch (Exception ex) {
             return null;

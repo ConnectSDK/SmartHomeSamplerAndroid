@@ -76,6 +76,7 @@ public abstract class SetupMultyChoiceFragment<T> extends Fragment {
         return fragment;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

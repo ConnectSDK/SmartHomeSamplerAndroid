@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.connectsdk.device.ConnectableDevice;
 import com.connectsdk.service.DLNAService;
@@ -53,7 +54,7 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
     @InjectView(R.id.viewPager)
     ViewPager viewPager;
 
-    private Fragment[] pages = new Fragment[5];
+    private final Fragment[] pages = new Fragment[5];
 
     private SceneConfig sceneConfig;
 
@@ -103,7 +104,8 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
     @Override
     public void saveBeaconDevice(BeaconAdapter.ScannedBleDevice device) {
         if (device != null) {
-            sceneConfig.beacon = device.MacAddress;
+            Log.d("", "beacon save " + device.macAddress);
+            sceneConfig.beacon = device.macAddress;
             sceneConfig.saveToPreferences(this, id);
         }
         viewPager.setCurrentItem(4, true);
@@ -136,6 +138,7 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void createPage(int i) {
         switch (i) {
             case 0:
@@ -147,6 +150,7 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
             case 2:
                 pages[2] = SetupWeMoFragment.newInstance((ArrayList)sceneConfig.wemos);
             case 3:
+                Log.d("", "beacon load " + sceneConfig.beacon);
                 pages[3] = SetupBeaconFragment.newInstance(sceneConfig.beacon);
             case 4:
                 pages[4] = SetupWinkFragment.newInstance((ArrayList)sceneConfig.winkBulbs);

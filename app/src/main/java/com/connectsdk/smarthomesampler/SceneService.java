@@ -28,7 +28,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.connectsdk.smarthomesampler.scene.SceneController;
 
@@ -88,11 +87,6 @@ public class SceneService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return super.onUnbind(intent);
     }
 
     @Override

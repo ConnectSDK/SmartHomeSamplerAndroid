@@ -44,15 +44,21 @@ import java.util.List;
 public class HueAdapter implements PHSDKListener {
 
     private static final String APP_NAME = "SmartHomeSampler";
+
     private static final String TAG = "HueAdapter";
+
     private final PHHueSDK phHue;
+
     private PHBridge bridge;
+
     private final Context context;
+
     private final String name;
+
     private final List<HueListener> hueListeners = new ArrayList<HueListener>();
-    private PHAccessPoint mActiveAccessPoint;
 
     public interface HueListener {
+
         public void onHueConnected();
 
         public void onHuePairingRequest(String name);
@@ -109,16 +115,14 @@ public class HueAdapter implements PHSDKListener {
     @Override
     public void onAuthenticationRequired(final PHAccessPoint phAccessPoint) {
         phHue.startPushlinkAuthentication(phAccessPoint);
-        if (hueListeners != null) {
-            Util.runOnUI(new Runnable() {
-                @Override
-                public void run() {
-                    for (HueListener listener : hueListeners) {
-                        listener.onHuePairingRequest("PhilipsHue (" + phAccessPoint.getIpAddress() + ")");
-                    }
+        Util.runOnUI(new Runnable() {
+            @Override
+            public void run() {
+                for (HueListener listener : hueListeners) {
+                    listener.onHuePairingRequest("PhilipsHue (" + phAccessPoint.getIpAddress() + ")");
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
@@ -187,7 +191,6 @@ public class HueAdapter implements PHSDKListener {
 
     void connect(PHAccessPoint accessPoint) {
         try {
-            mActiveAccessPoint = accessPoint;
             phHue.connect(accessPoint);
         } catch (PHHueException e) {
             e.printStackTrace();

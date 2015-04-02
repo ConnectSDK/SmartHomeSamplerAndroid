@@ -76,19 +76,19 @@ public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter
 
     @Override
     String getDeviceName(BeaconAdapter.ScannedBleDevice device) {
-        return device.DeviceName + " [" + device.MacAddress + "]";
+        return (device.deviceName == null ? "" : device.deviceName) + " [" + device.macAddress + "]";
     }
 
     @Override
     String getTitleMessage() {
-        return "Beacon devices";
+        return "iBeacon devices";
     }
 
     @Override
     int getPosition() {
         for (int i = 0; i < adapter.getCount(); i++) {
             BeaconAdapter.ScannedBleDevice device = adapter.getItem(i);
-            if (device.MacAddress.equals(beaconMAC)) {
+            if (device.macAddress.equals(beaconMAC)) {
                 return i;
             }
         }

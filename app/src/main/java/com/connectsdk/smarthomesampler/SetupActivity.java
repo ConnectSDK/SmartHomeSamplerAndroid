@@ -76,11 +76,8 @@ public class SetupActivity extends ActionBarActivity {
     }
 
     public boolean isSetUp() {
-        if (SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_FIRST).isConfigured()
-            && SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_SECOND).isConfigured()) {
-            return true;
-        }
-        return false;
+        return SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_FIRST).isConfigured()
+                && SceneConfig.loadFromPreferences(this, SceneController.SCENE_ID_SECOND).isConfigured();
     }
 
     @OnClick(R.id.btnSceneOne)
