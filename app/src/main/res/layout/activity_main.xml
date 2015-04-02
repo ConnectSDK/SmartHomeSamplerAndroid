@@ -1,0 +1,72 @@
+<LinearLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.connectsdk.com.connectsdk.smarthomesampler.MainActivity"
+    tools:ignore="MergeRootFrame">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:indeterminateOnly="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    
+    <LinearLayout
+        android:id="@+id/sceneLayout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonSay"
+            android:drawableTop="@android:drawable/ic_btn_speak_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/say"
+            />
+
+        <Button
+            android:id="@+id/buttonScene1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play_scene_1"/>
+
+        <Button
+            android:id="@+id/buttonScene2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play_scene_2"/>
+
+
+        <Button
+            android:id="@+id/buttonWakeUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wake_up"/>
+        
+        <Button
+            android:id="@+id/buttonStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stop"/>
+
+        <Button
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnect"/>
+
+        <TextView
+            android:id="@+id/textViewDebug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

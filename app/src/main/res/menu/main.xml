@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_license"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/license"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_configure"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/configure"
+        app:showAsAction="never"
+        />
+
+</menu>
