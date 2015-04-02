@@ -75,5 +75,6 @@ limitations under the License.</p>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="configure">Configure</string>
+    <string name="smarthome_service_is_working">SmartHome service is working</string>
 
 </resources>
