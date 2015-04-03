@@ -136,7 +136,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         this.listener = listener;
         discovery = new DeviceDiscovery(config, this);
         discovery.start();
-        Log.d("", "scene created");
         mState = SceneState.Connected;
     }
 
@@ -307,7 +306,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
     void play(final MediaInfo mediaInfo, final long delay, boolean allDevices) {
         if (!mState.equals(SceneState.Connected) && !mState.equals(SceneState.Stop) && !mState.equals(SceneState.PlaySmoothly)) {
-            Log.d("", "scene play wrong state " + mState.name());
             return;
         }
         if (!mState.equals(SceneState.PlaySmoothly)) {
@@ -340,7 +338,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
             MediaPlayer player = device.getCapability(MediaPlayer.class);
 
             if (player != null) {
-                Log.d("", "scene execute playMedia on the " + device.getFriendlyName() + " " + mediaInfo.getUrl());
                 player.playMedia(mediaInfo, false, new MediaPlayer.LaunchListener() {
 
                     public void onSuccess(final MediaPlayer.MediaLaunchObject object) {
@@ -371,7 +368,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
             MediaPlayer player = device.getCapability(MediaPlayer.class);
 
             if (player != null) {
-                Log.d("", "scene execute playMedia on the " + device.getFriendlyName() + " " + mediaInfo.getUrl());
                 player.playMedia(mediaInfo, false, new MediaPlayer.LaunchListener() {
 
                     public void onSuccess(final MediaPlayer.MediaLaunchObject object) {
@@ -418,7 +414,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
             }
 
         } else {
-            Log.d("", "scene seek skipped");
             startTimeTracking(object.mediaControl, delay);
         }
     }
@@ -427,13 +422,12 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         object.mediaControl.seek(sceneInfo.position, new ResponseListener<Object>() {
             @Override
             public void onSuccess(Object o) {
-                Log.d("", "scene seek OK");
                 startTimeTracking(object.mediaControl, delay);
             }
 
             @Override
             public void onError(ServiceCommandError serviceCommandError) {
-                Log.d("", "scene seek failed");
+                Log.e("", "scene seek failed");
             }
         });
     }
@@ -456,7 +450,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
             return;
         }
         // OK
-        Log.d("", "scene all devices are connected");
         if (mState.equals(SceneState.PlayAfterConnect)) {
             mState = SceneState.Connected;
             play(getCurrentTrack(), DELAY_BETWEEN_TRACKS, true);
@@ -475,7 +468,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
     @Override
     public void onPairingRequired(final ConnectableDevice connectableDevice, DeviceService deviceService, DeviceService.PairingType pairingType) {
-        Log.d("", "scene device pairing " + connectableDevice.getFriendlyName());
         if (listener != null && SceneConfig.contains(config, connectableDevice)) {
             Util.runOnUI(new Runnable() {
                 @Override
@@ -520,7 +512,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     private void startColorTimer() {
-        Log.d("", "scene color start");
         stopColorTimer();
         colorTimer = new Timer();
         colorTimer.scheduleAtFixedRate(new TimerTask() {
@@ -547,7 +538,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     private void stopColorTimer() {
-        Log.d("", "scene color stop");
         if (colorTimer != null) {
             colorTimer.cancel();
             colorTimer.purge();
@@ -557,7 +547,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
 
     private void startSmoothTimer(final int start, final int end, final boolean greater, final int increment) {
-        Log.d("", "scene smooth start");
         brightness = start;
         stopSmoothTimer();
         enableLights(true);
@@ -610,7 +599,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     private void stopSmoothTimer() {
-        Log.d("", "scene smooth stop");
         if (smoothTimer != null) {
             smoothTimer.cancel();
             smoothTimer.purge();
@@ -619,7 +607,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     private void startVolumeTimer(final float start, final float end, final boolean condGreater, final float incement, final Runnable runnable) {
-        Log.d("", "scene volume start");
         volume = start;
         stopVolumeTimer();
         volumeTimer = new Timer();
@@ -633,12 +620,11 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
                         volumeControl.setVolume(volume, new ResponseListener<Object>() {
                             @Override
                             public void onSuccess(Object object) {
-                                Log.d("", "scene volume set OK");
                             }
 
                             @Override
                             public void onError(ServiceCommandError error) {
-                                Log.d("", "scene volume set Error " + error.getMessage());
+                                Log.e("", "scene volume set Error " + error.getMessage());
                             }
                         });
                         volume += incement;
@@ -656,8 +642,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
                             }
                         }
 
-                    } else {
-                        Log.d("", "scene volume NO");
                     }
                 }
             }
@@ -666,7 +650,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
 
     private void stopVolumeTimer() {
-        Log.d("", "scene smooth stop");
         if (volumeTimer != null) {
             volumeTimer.cancel();
             volumeTimer.purge();
@@ -676,7 +659,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
     private void setVolume(float currentVolume) {
         if (currentVolume > 0.15f) {
-            Log.d("", "scene volume too high");
             return;
         }
         for (final ConnectableDevice device : connectableDevices.values()) {
@@ -685,12 +667,11 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
                 volumeControl.setVolume(currentVolume, new ResponseListener<Object>() {
                     @Override
                     public void onSuccess(Object object) {
-                        Log.d("", "scene volume OK");
                     }
 
                     @Override
                     public void onError(ServiceCommandError error) {
-                        Log.d("", "scene volume error " + error.getMessage());
+                        Log.e("", "scene volume error " + error.getMessage());
                     }
                 });
             }
@@ -713,7 +694,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         mediaControl.getDuration(new MediaControl.DurationListener() {
             @Override
             public void onSuccess(final Long totalDuration) {
-                Log.d("", "scene getDuration  " + totalDuration);
                 if (totalDuration > 0) {
                     durationTimer = new Timer();
                     durationTimer.scheduleAtFixedRate(new TimerTask() {
@@ -735,23 +715,20 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
             @Override
             public void onError(ServiceCommandError serviceCommandError) {
-                Log.d("", "scene track duration failed ");
+                Log.e("", "scene track duration failed ");
             }
         });
     }
 
     private void updateTrackPosition(Long totalDuration, long delay) {
-        Log.d("", "scene track duration " + totalDuration + " " + sceneInfo.position);
         sceneInfo.position += TIMER_UPDATE_DELAY;
         if (totalDuration <= sceneInfo.position) {
-            Log.d("", "scene track next ");
             next(delay);
         }
     }
 
     private synchronized void stopTimeTracking() {
         if (durationTimer != null) {
-            Log.d("", "scene cancel timer");
             durationTimer.cancel();
             durationTimer.purge();
             durationTimer = null;
@@ -759,7 +736,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     private synchronized void next(long delay) {
-        Log.d("", "scene next");
         stopColorTimer();
         stopTimeTracking();
         sceneInfo.position = 0;
@@ -804,8 +780,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
             @Override
             public void run() {
 
-                Log.d("", "scene download morning");
-
                 SimpleDateFormat sdf = new SimpleDateFormat("h:m a");
                 String text = "Good morning John! The time is " + sdf.format(new Date());
                 try {
@@ -816,20 +790,17 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
                     byte[] buf = new byte[1024];
                     int size;
                     while ((size = input.read(buf)) > 0) {
-                        Log.d("", "file output write");
                         fos.write(buf, 0, size);
                     }
                     fos.flush();
                     fos.close();
                     input.close();
-                    Log.d("", "file output OK");
 
                     if (server != null) {
                         server.stop();
                     }
                     server = new MediaServer(DiscoveryManager.getInstance().getContext(), "morning.mp3", 0);
                     server.start();
-                    Log.d("", "file server " + server.getListeningPort());
                     Util.runOnUI(new Runnable() {
                         @Override
                         public void run() {
@@ -840,7 +811,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("", "file output error " + e.getMessage());
                 }
             }
         });
@@ -869,7 +839,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
                             @Override
                             public void onSuccess(Integer object) {
                                 try {
-                                    Log.d("", "scene WAKUPP");
                                     String url = "http:/" + Util.getIpAddress(DiscoveryManager.getInstance().getContext()) + ":" + object + "/media.mp3";
                                     List<ImageInfo> images = Arrays.asList(new ImageInfo("http://ec2-54-201-108-205.us-west-2.compute.amazonaws.com/samples/media/image1.jpg"));
                                     MediaInfo mediaInfo = new MediaInfo(url, "audio/mpeg", "Wake up message", "Wake up message", images);

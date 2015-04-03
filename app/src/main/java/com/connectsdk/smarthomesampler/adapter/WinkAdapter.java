@@ -106,7 +106,6 @@ public class WinkAdapter {
             connection.setRequestMethod(method);
 
             if (accessToken != null && tokenType != null) {
-                Log.d("", "WINK: auth " + tokenType + " " + accessToken);
                 connection.setRequestProperty("Authorization", tokenType + " " + accessToken);
             }
 

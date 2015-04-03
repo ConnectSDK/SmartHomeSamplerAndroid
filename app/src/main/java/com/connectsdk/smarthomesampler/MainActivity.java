@@ -52,18 +52,6 @@ public class MainActivity extends ActionBarActivity implements IUserNotification
 
     private static final int REQUEST_RECOGNIZE_SPEECH = 2;
 
-    @InjectView(R.id.buttonScene1)
-    Button btnSceneOne;
-
-    @InjectView(R.id.buttonScene2)
-    Button btnSceneTwo;
-
-    @InjectView(R.id.buttonStop)
-    Button btnSceneStop;
-
-    @InjectView(R.id.buttonWakeUp)
-    Button btnWakeUp;
-
     @InjectView(R.id.textViewDebug)
     TextView textViewDebug;
 

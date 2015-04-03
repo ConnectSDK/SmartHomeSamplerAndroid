@@ -20,23 +20,10 @@
 package com.connectsdk.smarthomesampler;
 
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.connectsdk.smarthomesampler.adapter.BeaconAdapter;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class BluetoothService extends Service implements BeaconAdapter.BeaconUpdate {
     public static final String ACTION_NEW_BEACON = "com.connectsdk.com.connectsdk.smarthomesampler.BluetoothService.action_new_beacon";

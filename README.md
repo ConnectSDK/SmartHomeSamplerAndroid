@@ -16,14 +16,18 @@ For information on Connect SDK, visit [http://connectsdk.com/discover/](http://c
 
 ##Setup with Android Studio
 1. Download the SmartHomeSamplerAndroid project
-    ```groovy
+    ```
     git clone https://github.com/ConnectSDK/SmartHomeSamplerAndroid.git
     ```
     
 2. Download [Philips Hue Java SDK](http://www.developers.meethue.com/documentation/java-multi-platform-and-android-sdk) (huelocalsdk.jar and huesdkresources.jar) and put it into the app/libs folder.
 3. Download [Belkin WeMo Local SDK for Android](http://developers.belkin.com/wemo/sdk) and put it into the app/libs folder.
 4. Import the SmartHomeSamplerAndroid project into Android Studio
-
+5. Modify app/src/main/java/com/connectsdk/smarthomesampler/scene/WinkCredentials.java and set your Wink credentials in that file.
+6. Execute this command to avoid adding your credentials to git
+    ```
+    git update-index --assume-unchanged app/src/main/java/com/connectsdk/smarthomesampler/scene/WinkCredentials.java
+    ```
 
 ##License
 

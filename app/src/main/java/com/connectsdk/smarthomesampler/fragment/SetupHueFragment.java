@@ -33,7 +33,7 @@ import com.philips.lighting.model.PHLight;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupHueFragment extends SetupMultyChoiceFragment<PHLight> implements HueAdapter.HueListener {
+public class SetupHueFragment extends SetupMultiChoiceFragment<PHLight> implements HueAdapter.HueListener {
 
     private HueAdapter hueAdapter;
 
@@ -45,7 +45,7 @@ public class SetupHueFragment extends SetupMultyChoiceFragment<PHLight> implemen
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
         SetupHueFragment fragment = new SetupHueFragment();
-        return SetupMultyChoiceFragment.setArguments(fragment, bulbs);
+        return SetupMultiChoiceFragment.setArguments(fragment, bulbs);
     }
 
     @Override

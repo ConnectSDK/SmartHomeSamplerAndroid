@@ -32,7 +32,7 @@ import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupWeMoFragment extends SetupMultyChoiceFragment<WeMoDevice> implements WeMoSDKContext.NotificationListener {
+public class SetupWeMoFragment extends SetupMultiChoiceFragment<WeMoDevice> implements WeMoSDKContext.NotificationListener {
 
     private WeMoSDKContext wemoContext;
 
@@ -44,7 +44,7 @@ public class SetupWeMoFragment extends SetupMultyChoiceFragment<WeMoDevice> impl
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
         SetupWeMoFragment fragment = new SetupWeMoFragment();
-        return SetupMultyChoiceFragment.setArguments(fragment, bulbs);
+        return SetupMultiChoiceFragment.setArguments(fragment, bulbs);
     }
 
     @Override

@@ -51,7 +51,6 @@ class DeviceDiscovery implements DiscoveryManagerListener {
 
     public void start() {
         addFoundDevices();
-        Log.d("", "discovery start");
         DiscoveryManager.getInstance().addListener(this);
         DiscoveryManager.getInstance().stop();
         DiscoveryManager.getInstance().start();
@@ -69,7 +68,6 @@ class DeviceDiscovery implements DiscoveryManagerListener {
     }
 
     private synchronized void checkDevices() {
-        Log.d("", "discovery checl " + foundDevices.size() + " " + config.devices.size());
         if (foundDevices.size() == config.devices.size()) {
             for (ConnectableDevice d : foundDevices.values()) {
                 DeviceService s = d.getServiceByName(SceneConfig.getServiceName(config, d));
@@ -79,7 +77,6 @@ class DeviceDiscovery implements DiscoveryManagerListener {
             }
 
             if (!ready && listener != null) {
-                Log.d("", "discovery READY ");
                 ready = true;
                 listener.onDevicesReadyToConnect(foundDevices);
                 stop();
@@ -89,7 +86,6 @@ class DeviceDiscovery implements DiscoveryManagerListener {
 
     @Override
     public void onDeviceAdded(DiscoveryManager manager, ConnectableDevice device) {
-        Log.d("", "discovery add " + device.getFriendlyName() + " " + device.getIpAddress());
         for (SceneConfig.DeviceConfig dc : config.devices) {
             if (device.getFriendlyName().contains(dc.name)) {
                 foundDevices.put(device.getIpAddress(), device);
@@ -100,7 +96,6 @@ class DeviceDiscovery implements DiscoveryManagerListener {
 
     @Override
     public void onDeviceUpdated(DiscoveryManager manager, ConnectableDevice device) {
-        Log.d("", "discovery add " + device.getFriendlyName() + " " + device.getIpAddress());
         for (SceneConfig.DeviceConfig dc : config.devices) {
             if (device.getFriendlyName().contains(dc.name)) {
                 foundDevices.put(device.getIpAddress(), device);

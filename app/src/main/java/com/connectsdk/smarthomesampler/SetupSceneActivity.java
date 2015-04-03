@@ -161,7 +161,6 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
             return false;
         }
         if (device != null) {
-            Log.d("", "beacon save " + device.macAddress);
             sceneConfig.beacon = device.macAddress;
             sceneConfig.saveToPreferences(this, id);
         }
@@ -232,7 +231,6 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
             case 2:
                 pages[2] = SetupWeMoFragment.newInstance((ArrayList)sceneConfig.wemos);
             case 3:
-                Log.d("", "beacon load " + sceneConfig.beacon);
                 pages[3] = SetupBeaconFragment.newInstance(sceneConfig.beacon);
             case 4:
                 pages[4] = SetupWinkFragment.newInstance((ArrayList)sceneConfig.winkBulbs);

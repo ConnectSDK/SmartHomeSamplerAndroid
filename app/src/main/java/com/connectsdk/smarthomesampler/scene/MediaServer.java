@@ -43,12 +43,6 @@ class MediaServer extends NanoHTTPD {
 
     @Override
     public synchronized Response serve(IHTTPSession session) {
-        Log.d("", "server: " + session.getMethod().name() +  " " + session.getUri() + " " + session.getQueryParameterString() );
-        for (Map.Entry<String, String> entry : session.getHeaders().entrySet()) {
-            Log.d("", "server: " + entry.getKey() + " " + entry.getValue());
-        }
-
-
         File file = new File(context.getFilesDir() + "/" + filename);
         return serveFile(session.getHeaders(), file, "audio/mp3");
     }

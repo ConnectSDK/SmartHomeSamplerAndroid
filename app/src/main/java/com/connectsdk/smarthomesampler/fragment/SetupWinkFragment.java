@@ -36,7 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupWinkFragment extends SetupMultyChoiceFragment<JSONObject> {
+public class SetupWinkFragment extends SetupMultiChoiceFragment<JSONObject> {
 
     private WinkAdapter winkAdapter;
 
@@ -48,7 +48,7 @@ public class SetupWinkFragment extends SetupMultyChoiceFragment<JSONObject> {
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
         SetupWinkFragment fragment = new SetupWinkFragment();
-        return SetupMultyChoiceFragment.setArguments(fragment, bulbs);
+        return SetupMultiChoiceFragment.setArguments(fragment, bulbs);
     }
 
     @Override

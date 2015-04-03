@@ -1,5 +1,5 @@
 /*
- * InfoFragmentDialog
+ * AcknowledgementsFragmentDialog
  * SmartHomeSamplerAndroid
  *
  * Copyright (c) 2015 LG Electronics.

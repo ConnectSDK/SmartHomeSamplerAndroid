@@ -1,5 +1,5 @@
 /*
- * SetupMultyChoiceFragment
+ * SetupMultiChoiceFragment
  * SmartHomeSamplerAndroid
  *
  * Copyright (c) 2015 LG Electronics.
@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public abstract class SetupMultyChoiceFragment<T> extends Fragment {
+public abstract class SetupMultiChoiceFragment<T> extends Fragment {
 
     @InjectView(R.id.listView)
     ListView listView;
@@ -136,7 +136,6 @@ public abstract class SetupMultyChoiceFragment<T> extends Fragment {
                         listView.setItemChecked(adapter.getPosition(device), true);
                     }
                 }
-                Log.d("", "WINK update adapter");
             }
         });
     }

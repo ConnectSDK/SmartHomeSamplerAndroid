@@ -55,7 +55,6 @@ public class WeMoAdapter implements WeMoSDKContext.NotificationListener {
     public void onNotify(String event, String udn) {
         WeMoDevice device = wemoContext.getWeMoDeviceByUDN(udn);
         if (device != null && !wemoDevices.contains(device) && config.wemos.contains(udn)) {
-            Log.d("", "scene add WeMo");
             wemoDevices.add(device);
         }
         if (isConnected()) {

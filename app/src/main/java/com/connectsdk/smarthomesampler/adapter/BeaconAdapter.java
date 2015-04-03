@@ -119,10 +119,8 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
 
     @Override
     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        Log.d("", "BTSERV " + device.getAddress() + " " + rssi + " " + device.getName());
         ScannedBleDevice info = parseRawScanRecord(device, rssi, scanRecord);
         if (info != null) {
-            Log.d("", "BTSERV " + info.tx + " " + info.distance);
             devices.put(device.getAddress(), info);
 
             if (listener != null) {
@@ -140,7 +138,6 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
         }
 
         if (closest != null) {
-            Log.d("", "scene beacon closests yes ");
             if (listener != null
                     && Math.abs(prevDistance - closest.distance) < 1.2 && closest.distance < 1.8) {
                 listener.onClosestBeacon(closest);
@@ -187,11 +184,6 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
     private ScannedBleDevice parseRawScanRecord(BluetoothDevice device, int rssi, byte[] advertisedData) {
         try {
             ScannedBleDevice parsedObj = new ScannedBleDevice();
-Log.d("", "BEACON " + new BigInteger(1, advertisedData).toString(16));
-            /*
-            201061aff4c00021588889999aaaabbbbccccddddeeeeffff00000000ae0302041800000000000000000000000000000000000000000000000000000000
-
-             */
             parsedObj.deviceName = device.getName();
             parsedObj.macAddress = device.getAddress();
             parsedObj.RSSI = rssi;
