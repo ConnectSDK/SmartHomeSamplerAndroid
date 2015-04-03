@@ -91,10 +91,7 @@ public class SceneConfig {
         }
 
         SceneConfig config = new SceneConfig(id, devices, bulbs, wemos, winkBulbs);
-
-        String ibeacon = pref.getString("ibeacon", "");
-        config.beacon = ibeacon;
-
+        config.beacon = pref.getString("ibeacon", "");
         return config;
     }
 

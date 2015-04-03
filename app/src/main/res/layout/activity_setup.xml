@@ -21,7 +21,7 @@
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Scene 1"/>
+                android:text="@string/scene_1"/>
 
             <TextView
                 android:id="@+id/textViewScene1State"
@@ -63,7 +63,7 @@
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Scene 2"/>
+                android:text="@string/scene_2"/>
 
             <TextView
                 android:id="@+id/textViewScene2State"

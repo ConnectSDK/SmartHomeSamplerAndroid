@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.connectsdk.device.ConnectableDevice;
-import com.connectsdk.discovery.CapabilityFilter;
 import com.connectsdk.discovery.DiscoveryManager;
 import com.connectsdk.discovery.DiscoveryManagerListener;
 import com.connectsdk.service.DLNAService;
@@ -36,7 +35,6 @@ import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 import com.connectsdk.smarthomesampler.scene.SceneConfig;
 
 import java.util.Collection;
-import java.util.List;
 
 public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDevice> implements DiscoveryManagerListener {
 

@@ -29,9 +29,6 @@ import com.connectsdk.smarthomesampler.R;
 import com.connectsdk.smarthomesampler.adapter.BeaconAdapter;
 import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 
-import java.math.BigInteger;
-import java.util.UUID;
-
 public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter.ScannedBleDevice> implements BeaconAdapter.BeaconUpdate {
 
     private BeaconAdapter beaconAdapter;

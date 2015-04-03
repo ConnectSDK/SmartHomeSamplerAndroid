@@ -25,13 +25,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.TypedValue;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
-import com.connectsdk.smarthomesampler.R;
 
 public class MessageFragmentDialog extends DialogFragment {
 

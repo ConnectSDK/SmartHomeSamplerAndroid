@@ -24,10 +24,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,14 +163,15 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             ScannedBleDevice that = (ScannedBleDevice) o;
-
-            if (!macAddress.equals(that.macAddress)) return false;
-
-            return true;
+            return macAddress.equals(that.macAddress);
         }
 
         @Override

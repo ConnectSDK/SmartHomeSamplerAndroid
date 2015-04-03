@@ -64,23 +64,17 @@ limitations under the License.</p>
     <string name="play_scene_2">Play Scene 2</string>
     <string name="wake_up">Wake Up</string>
     <string name="stop">Stop</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="save">Save</string>
     <string name="configure">Configure</string>
-    <string name="configure_scene_1">Configure scene 1</string>
-    <string name="configure_scene_2">Configure scene 2</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
     <string name="press_hue_button">Press link button for pairing.</string>
-    <string name="no_items">no items</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
     <string name="smarthome_service_is_working">SmartHome service is working</string>
     <string name="not_configured">Not configured</string>
     <string name="configured">Configured</string>
     <string name="hold">Hold</string>
-    <string name="acknowledgements">Acknowledgements</string>
     <string name="warning">Warning</string>
     <string name="device_will_be_removed_from_scene">This device was selected in another scene and will be removed there because each scene must have unique devices.</string>
+    <string name="scene_1">Scene 1</string>
+    <string name="scene_2">Scene 2</string>
 
 </resources>

@@ -19,8 +19,6 @@
  */
 package com.connectsdk.smarthomesampler.adapter;
 
-import android.util.Log;
-
 import com.belkin.wemo.localsdk.WeMoDevice;
 import com.belkin.wemo.localsdk.WeMoSDKContext;
 import com.connectsdk.core.Util;

@@ -19,8 +19,6 @@
  */
 package com.connectsdk.smarthomesampler.scene;
 
-import android.util.Log;
-
 import com.connectsdk.device.ConnectableDevice;
 import com.connectsdk.discovery.DiscoveryManager;
 import com.connectsdk.discovery.DiscoveryManagerListener;
