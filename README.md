@@ -16,9 +16,10 @@ For information on Connect SDK, visit [http://connectsdk.com/discover/](http://c
 
 ##Setup with Android Studio
 1. Download the SmartHomeSamplerAndroid project
-    ```
+    ```groovy
     git clone https://github.com/ConnectSDK/SmartHomeSamplerAndroid.git
     ```
+    
 2. Download [Philips Hue Java SDK](http://www.developers.meethue.com/documentation/java-multi-platform-and-android-sdk) (huelocalsdk.jar and huesdkresources.jar) and put it into the libs folder.
 3. Download [Belkin WeMo Local SDK for Android](http://developers.belkin.com/wemo/sdk) and put it into the libs folder.
 4. Import the SmartHomeSamplerAndroid project into Android Studio
