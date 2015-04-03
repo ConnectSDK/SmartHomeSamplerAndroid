@@ -20,6 +20,7 @@
 
 package com.connectsdk.smarthomesampler.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -30,6 +31,8 @@ import com.connectsdk.discovery.DiscoveryManagerListener;
 import com.connectsdk.service.DLNAService;
 import com.connectsdk.service.WebOSTVService;
 import com.connectsdk.service.command.ServiceCommandError;
+import com.connectsdk.smarthomesampler.R;
+import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 import com.connectsdk.smarthomesampler.scene.SceneConfig;
 
 import java.util.Collection;
@@ -40,7 +43,9 @@ public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDev
     private SceneConfig.DeviceConfig selectedDevice;
 
     public interface ISaveConnectableDevice {
-        public void saveConnectableDevice(ConnectableDevice device);
+        public boolean saveConnectableDevice(ConnectableDevice device);
+
+        public void forceSaveConnectableDevice(ConnectableDevice device);
     }
 
     public static Fragment newInstance(SceneConfig.DeviceConfig device) {
@@ -77,8 +82,18 @@ public class SetupMediaFragment extends SetupSingleChoiceFragment<ConnectableDev
     }
 
     @Override
-    void save(ConnectableDevice device) {
-        ((ISaveConnectableDevice)getActivity()).saveConnectableDevice(device);
+    void save(final ConnectableDevice device) {
+        final ISaveConnectableDevice activity = ((ISaveConnectableDevice)getActivity());
+        if (!activity.saveConnectableDevice(device)) {
+            ConfirmationFragmentDialog dlg = ConfirmationFragmentDialog.newInstance(getString(R.string.warning), getString(R.string.device_will_be_removed_from_scene));
+            dlg.setPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.forceSaveConnectableDevice(device);
+                }
+            });
+            dlg.show(getActivity().getSupportFragmentManager(), "");
+        }
     }
 
     @Override

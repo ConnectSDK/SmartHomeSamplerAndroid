@@ -21,10 +21,13 @@
 package com.connectsdk.smarthomesampler.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.connectsdk.smarthomesampler.R;
 import com.connectsdk.smarthomesampler.adapter.BeaconAdapter;
+import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -35,7 +38,9 @@ public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter
     private String beaconMAC;
 
     public interface ISaveBeaconDevice {
-        void saveBeaconDevice(BeaconAdapter.ScannedBleDevice device);
+        boolean saveBeaconDevice(BeaconAdapter.ScannedBleDevice device);
+
+        void forceSaveBeaconDevice(BeaconAdapter.ScannedBleDevice device);
     }
 
     public static Fragment newInstance(String beaconMAC) {
@@ -73,8 +78,18 @@ public class SetupBeaconFragment extends SetupSingleChoiceFragment<BeaconAdapter
     }
 
     @Override
-    void save(BeaconAdapter.ScannedBleDevice device) {
-        ((ISaveBeaconDevice)getActivity()).saveBeaconDevice(device);
+    void save(final BeaconAdapter.ScannedBleDevice device) {
+        final ISaveBeaconDevice activity = ((ISaveBeaconDevice)getActivity());
+        if (!activity.saveBeaconDevice(device)) {
+            ConfirmationFragmentDialog dlg = ConfirmationFragmentDialog.newInstance(getString(R.string.warning), getString(R.string.device_will_be_removed_from_scene));
+            dlg.setPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.forceSaveBeaconDevice(device);
+                }
+            });
+            dlg.show(getActivity().getSupportFragmentManager(), "");
+        }
     }
 
     @Override

@@ -21,10 +21,13 @@
 package com.connectsdk.smarthomesampler.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
 import com.belkin.wemo.localsdk.WeMoDevice;
 import com.belkin.wemo.localsdk.WeMoSDKContext;
+import com.connectsdk.smarthomesampler.R;
+import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,9 @@ public class SetupWeMoFragment extends SetupMultyChoiceFragment<WeMoDevice> impl
     private WeMoSDKContext wemoContext;
 
     public interface ISaveWemoDevice {
-        public void saveWemoDevice(List<String> bulbs);
+        public boolean saveWemoDevice(List<String> bulbs);
+
+        public void forceSaveWemoDevice(List<String> bulbs);
     }
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
@@ -56,7 +61,17 @@ public class SetupWeMoFragment extends SetupMultyChoiceFragment<WeMoDevice> impl
 
     @Override
     void save() {
-        ((ISaveWemoDevice)getActivity()).saveWemoDevice(ids);
+        final ISaveWemoDevice activity = ((ISaveWemoDevice) getActivity());
+        if (!activity.saveWemoDevice(ids)) {
+            ConfirmationFragmentDialog dlg = ConfirmationFragmentDialog.newInstance(getString(R.string.warning), getString(R.string.device_will_be_removed_from_scene));
+            dlg.setPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.forceSaveWemoDevice(ids);
+                }
+            });
+            dlg.show(getActivity().getSupportFragmentManager(), "");
+        }
     }
 
     @Override

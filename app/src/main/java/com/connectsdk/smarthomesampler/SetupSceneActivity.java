@@ -38,6 +38,7 @@ import com.connectsdk.smarthomesampler.fragment.SetupMediaFragment;
 import com.connectsdk.smarthomesampler.fragment.SetupWeMoFragment;
 import com.connectsdk.smarthomesampler.fragment.SetupWinkFragment;
 import com.connectsdk.smarthomesampler.scene.SceneConfig;
+import com.connectsdk.smarthomesampler.scene.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,11 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
 
     private SceneConfig sceneConfig;
 
+    private SceneConfig anotherSceneConfig;
+
     private String id;
+
+    private String anotherSceneId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,11 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
         setContentView(R.layout.activity_scene_setup);
         ButterKnife.inject(this);
         id = getIntent().getStringExtra(EXTRA_SCENE_ID);
+        if (SceneController.SCENE_ID_FIRST.equals(id)) {
+            anotherSceneId = SceneController.SCENE_ID_SECOND;
+        } else {
+            anotherSceneId = SceneController.SCENE_ID_FIRST;
+        }
         loadSceneConfig();
         viewPager.setAdapter(new SetupAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(pages.length);
@@ -75,46 +85,104 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
 
     private void loadSceneConfig() {
         sceneConfig = SceneConfig.loadFromPreferences(this, id);
+        anotherSceneConfig = SceneConfig.loadFromPreferences(this, anotherSceneId);
     }
 
     @Override
-    public void saveConnectableDevice(ConnectableDevice device) {
+    public boolean saveConnectableDevice(ConnectableDevice device) {
         if (device != null) {
             sceneConfig.devices.clear();
             String service = device.getServiceByName(WebOSTVService.ID) != null ? WebOSTVService.ID : DLNAService.ID;
             SceneConfig.DeviceConfig config = new SceneConfig.DeviceConfig(device.getFriendlyName(), service);
+            // check another scene
+            if (anotherSceneConfig.devices.contains(config)) {
+                return false;
+            }
             sceneConfig.devices.add(config);
             sceneConfig.saveToPreferences(this, id);
         }
         viewPager.setCurrentItem(1, true);
+        return true;
     }
 
     @Override
-    public void saveHueDevice(List<String> bulbs) {
+    public void forceSaveConnectableDevice(ConnectableDevice device) {
+        if (device != null) {
+            SceneConfig.DeviceConfig config = new SceneConfig.DeviceConfig(device.getFriendlyName(), null);
+            anotherSceneConfig.devices.remove(config);
+            anotherSceneConfig.saveToPreferences(this, anotherSceneId);
+        }
+        saveConnectableDevice(device);
+    }
+
+    @Override
+    public boolean saveHueDevice(List<String> bulbs) {
+        for (String bulb : bulbs) {
+            if (anotherSceneConfig.bulbs.contains(bulb)) {
+                return false;
+            }
+        }
         sceneConfig.bulbs = bulbs;
         viewPager.setCurrentItem(2, true);
         sceneConfig.saveToPreferences(this, id);
+        return true;
     }
 
     @Override
-    public void saveWemoDevice(List<String> bulbs) {
+    public void forceSaveHueDevice(List<String> bulbs) {
+        anotherSceneConfig.bulbs.removeAll(bulbs);
+        anotherSceneConfig.saveToPreferences(this, anotherSceneId);
+        saveHueDevice(bulbs);
+    }
+
+    @Override
+    public boolean saveWemoDevice(List<String> bulbs) {
+        for (String bulb : bulbs) {
+            if (anotherSceneConfig.wemos.contains(bulb)) {
+                return false;
+            }
+        }
         sceneConfig.wemos = bulbs;
         viewPager.setCurrentItem(3, true);
         sceneConfig.saveToPreferences(this, id);
+        return true;
     }
 
     @Override
-    public void saveBeaconDevice(BeaconAdapter.ScannedBleDevice device) {
+    public void forceSaveWemoDevice(List<String> bulbs) {
+        anotherSceneConfig.wemos.removeAll(bulbs);
+        anotherSceneConfig.saveToPreferences(this, anotherSceneId);
+        saveWemoDevice(bulbs);
+    }
+
+    @Override
+    public boolean saveBeaconDevice(BeaconAdapter.ScannedBleDevice device) {
+        if (device != null && device.macAddress != null && device.macAddress.equals(anotherSceneConfig.beacon)) {
+            return false;
+        }
         if (device != null) {
             Log.d("", "beacon save " + device.macAddress);
             sceneConfig.beacon = device.macAddress;
             sceneConfig.saveToPreferences(this, id);
         }
         viewPager.setCurrentItem(4, true);
+        return true;
     }
 
     @Override
-    public void saveWinkDevice(List<String> bulbs) {
+    public void forceSaveBeaconDevice(BeaconAdapter.ScannedBleDevice device) {
+        anotherSceneConfig.beacon = "";
+        anotherSceneConfig.saveToPreferences(this, anotherSceneId);
+        saveBeaconDevice(device);
+    }
+
+    @Override
+    public boolean saveWinkDevice(List<String> bulbs) {
+        for (String bulb : bulbs) {
+            if (anotherSceneConfig.winkBulbs.contains(bulb)) {
+                return false;
+            }
+        }
         sceneConfig.winkBulbs = bulbs;
         sceneConfig.saveToPreferences(this, id);
         if (sceneConfig.isConfigured()) {
@@ -122,6 +190,14 @@ public class SetupSceneActivity extends ActionBarActivity implements SetupMediaF
         } else {
             MessageFragmentDialog.newInstance("Scene is not configured", "Please select one media device and at least one bulb to finish configuration.").show(getSupportFragmentManager(), "msg_dialog");
         }
+        return true;
+    }
+
+    @Override
+    public void forceSaveWinkDevice(List<String> bulbs) {
+        anotherSceneConfig.winkBulbs.removeAll(bulbs);
+        anotherSceneConfig.saveToPreferences(this, anotherSceneId);
+        saveWinkDevice(bulbs);
     }
 
     private class SetupAdapter extends FragmentPagerAdapter {

@@ -80,5 +80,7 @@ limitations under the License.</p>
     <string name="configured">Configured</string>
     <string name="hold">Hold</string>
     <string name="acknowledgements">Acknowledgements</string>
+    <string name="warning">Warning</string>
+    <string name="device_will_be_removed_from_scene">This device was selected in another scene and will be removed there because each scene must have unique devices.</string>
 
 </resources>

@@ -147,6 +147,23 @@ public class SceneConfig {
         public String toString() {
             return name + "#" + requiredService;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof DeviceConfig)) return false;
+
+            DeviceConfig that = (DeviceConfig) o;
+
+            if (name != null ? !name.equals(that.name) : that.name != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return name != null ? name.hashCode() : 0;
+        }
     }
 
     public static String getServiceName(SceneConfig config, ConnectableDevice d) {

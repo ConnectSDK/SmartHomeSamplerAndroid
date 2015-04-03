@@ -21,9 +21,12 @@
 package com.connectsdk.smarthomesampler.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
+import com.connectsdk.smarthomesampler.R;
 import com.connectsdk.smarthomesampler.adapter.HueAdapter;
+import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 import com.connectsdk.smarthomesampler.dialog.HueFragmentDialog;
 import com.philips.lighting.model.PHLight;
 
@@ -35,7 +38,9 @@ public class SetupHueFragment extends SetupMultyChoiceFragment<PHLight> implemen
     private HueAdapter hueAdapter;
 
     public interface ISaveHueDevice {
-        public void saveHueDevice(List<String> bulbs);
+        public boolean saveHueDevice(List<String> bulbs);
+
+        public void forceSaveHueDevice(List<String> bulbs);
     }
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
@@ -56,7 +61,17 @@ public class SetupHueFragment extends SetupMultyChoiceFragment<PHLight> implemen
 
     @Override
     void save() {
-        ((ISaveHueDevice)getActivity()).saveHueDevice(ids);
+        final ISaveHueDevice activity = ((ISaveHueDevice)getActivity());
+        if (!activity.saveHueDevice(ids)) {
+            ConfirmationFragmentDialog dlg = ConfirmationFragmentDialog.newInstance(getString(R.string.warning), getString(R.string.device_will_be_removed_from_scene));
+            dlg.setPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.forceSaveHueDevice(ids);
+                }
+            });
+            dlg.show(getActivity().getSupportFragmentManager(), "");
+        }
     }
 
     @Override

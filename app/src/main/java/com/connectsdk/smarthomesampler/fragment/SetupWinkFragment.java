@@ -21,10 +21,13 @@
 package com.connectsdk.smarthomesampler.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
 import com.connectsdk.core.Util;
+import com.connectsdk.smarthomesampler.R;
 import com.connectsdk.smarthomesampler.adapter.WinkAdapter;
+import com.connectsdk.smarthomesampler.dialog.ConfirmationFragmentDialog;
 import com.connectsdk.smarthomesampler.scene.WinkCredentials;
 
 import org.json.JSONException;
@@ -38,7 +41,9 @@ public class SetupWinkFragment extends SetupMultyChoiceFragment<JSONObject> {
     private WinkAdapter winkAdapter;
 
     public interface ISaveWinkDevice {
-        public void saveWinkDevice(List<String> bulbs);
+        public boolean saveWinkDevice(List<String> bulbs);
+
+        public void forceSaveWinkDevice(List<String> bulbs);
     }
 
     public static Fragment newInstance(ArrayList<String> bulbs) {
@@ -70,7 +75,17 @@ public class SetupWinkFragment extends SetupMultyChoiceFragment<JSONObject> {
 
     @Override
     void save() {
-        ((ISaveWinkDevice)getActivity()).saveWinkDevice(ids);
+        final ISaveWinkDevice activity = ((ISaveWinkDevice)getActivity());
+        if (!activity.saveWinkDevice(ids)) {
+            ConfirmationFragmentDialog dlg = ConfirmationFragmentDialog.newInstance(getString(R.string.warning), getString(R.string.device_will_be_removed_from_scene));
+            dlg.setPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    activity.forceSaveWinkDevice(ids);
+                }
+            });
+            dlg.show(getActivity().getSupportFragmentManager(), "");
+        }
     }
 
     @Override
