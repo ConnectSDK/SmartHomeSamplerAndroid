@@ -41,9 +41,7 @@ public class WinkAdapter {
         wink = new WinkClient();
         try {
             wink.oauth(credentials);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
@@ -62,7 +60,7 @@ public class WinkAdapter {
     public List<JSONObject> getGeBulbIds() throws IOException, JSONException {
         JSONObject devices = wink.loadAllDevices();
         JSONArray jsonArray = devices.getJSONArray("data");
-        List<JSONObject> geBulbs = new ArrayList<JSONObject>();
+        List<JSONObject> geBulbs = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonItem = jsonArray.getJSONObject(i);
             if (jsonItem.has("light_bulb_id") && jsonItem.has("model_name") && "GE light bulb".equals(jsonItem.get("model_name"))) {

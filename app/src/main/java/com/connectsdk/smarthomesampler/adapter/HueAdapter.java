@@ -55,7 +55,7 @@ public class HueAdapter implements PHSDKListener {
 
     private final String name;
 
-    private final List<HueListener> hueListeners = new ArrayList<HueListener>();
+    private final List<HueListener> hueListeners = new ArrayList<>();
 
     public interface HueListener {
 

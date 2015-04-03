@@ -36,7 +36,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
 
     private final BluetoothAdapter btAdapter;
 
-    private final Map<String, ScannedBleDevice> devices = new HashMap<String, ScannedBleDevice>();
+    private final Map<String, ScannedBleDevice> devices = new HashMap<>();
 
     private double prevDistance = 100;
 
@@ -191,7 +191,7 @@ public class BeaconAdapter implements BluetoothAdapter.LeScanCallback {
             int magicStartIndex = skippedByteCount + 1;
             int magicEndIndex = magicStartIndex
                     + advertisedData[magicStartIndex] + 1;
-            ArrayList<Byte> magic = new ArrayList<Byte>();
+            ArrayList<Byte> magic = new ArrayList<>();
             for (int i = magicStartIndex; i < magicEndIndex; i++) {
                 magic.add(advertisedData[i]);
             }

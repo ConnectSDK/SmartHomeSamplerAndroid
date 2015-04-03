@@ -49,7 +49,7 @@ public class SceneController {
 
     IScene currentScene;
 
-    final Map<String, IScene> scenes = new HashMap<String, IScene>();
+    final Map<String, IScene> scenes = new HashMap<>();
 
     private final IUserNotificationListener userNotificationListener;
 
@@ -81,7 +81,7 @@ public class SceneController {
 
     List<MediaInfo> getPlaylist() {
         MediaInfo media;
-        List<MediaInfo> playlist = new ArrayList<MediaInfo>();
+        List<MediaInfo> playlist = new ArrayList<>();
         List<ImageInfo> images;
 
         images = Arrays.asList(new ImageInfo("http://ec2-54-201-108-205.us-west-2.compute.amazonaws.com/samples/media/sample.png"));

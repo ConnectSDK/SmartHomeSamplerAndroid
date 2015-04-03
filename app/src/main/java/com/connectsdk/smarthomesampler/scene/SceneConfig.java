@@ -98,25 +98,25 @@ public class SceneConfig {
     public void saveToPreferences(Context context, String id) {
         SharedPreferences.Editor editor = context.getSharedPreferences(id, Context.MODE_PRIVATE).edit();
 
-        Set<String> mediaDevices = new HashSet<String>();
+        Set<String> mediaDevices = new HashSet<>();
         for (DeviceConfig config : devices) {
             mediaDevices.add(config.name + "#" + config.requiredService);
         }
         editor.putStringSet("mediaDevices", mediaDevices);
 
-        Set<String> bulbsSet = new HashSet<String>();
+        Set<String> bulbsSet = new HashSet<>();
         for (String item : bulbs) {
             bulbsSet.add(item);
         }
         editor.putStringSet("bulbs", bulbsSet);
 
-        Set<String> wemoSet = new HashSet<String>();
+        Set<String> wemoSet = new HashSet<>();
         for (String item : wemos) {
             wemoSet.add(item);
         }
         editor.putStringSet("wemos", wemoSet);
 
-        Set<String> winkSet = new HashSet<String>();
+        Set<String> winkSet = new HashSet<>();
         for (String item : winkBulbs) {
             winkSet.add(item);
         }

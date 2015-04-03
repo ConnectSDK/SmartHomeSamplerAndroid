@@ -32,8 +32,8 @@ public class WeMoAdapter implements WeMoSDKContext.NotificationListener {
 
     private final WeMoSDKContext wemoContext;
     private final SceneConfig config;
-    private final List<WeMoDevice> wemoDevices = new ArrayList<WeMoDevice>();
-    private final List<ConnectListener> connectListeners = new ArrayList<ConnectListener>();
+    private final List<WeMoDevice> wemoDevices = new ArrayList<>();
+    private final List<ConnectListener> connectListeners = new ArrayList<>();
 
     public interface ConnectListener {
         void onWeMoConnected();

@@ -31,7 +31,7 @@ import java.util.Map;
 class DeviceDiscovery implements DiscoveryManagerListener {
 
     private final SceneConfig config;
-    private final Map<String, ConnectableDevice> foundDevices = new HashMap<String, ConnectableDevice>();
+    private final Map<String, ConnectableDevice> foundDevices = new HashMap<>();
     private volatile boolean ready;
 
     public interface DeviceDiscovered {

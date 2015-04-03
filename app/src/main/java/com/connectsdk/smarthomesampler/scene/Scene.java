@@ -64,7 +64,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery.DeviceDiscovered, HueAdapter.HueListener, WeMoAdapter.ConnectListener {
+public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery.DeviceDiscovered,
+        HueAdapter.HueListener, WeMoAdapter.ConnectListener {
     private static final long TIMER_UPDATE_DELAY = 1000;
     private static final long TIMER_COLOR_DELAY = 10000;
     private static final long DELAY_BETWEEN_TRACKS = 1000;
@@ -74,13 +75,12 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
     private final String name;
     private final SceneConfig config;
-    private Map<String, ConnectableDevice> connectableDevices = new HashMap<String, ConnectableDevice>();
+    private Map<String, ConnectableDevice> connectableDevices = new HashMap<>();
     private SceneInfo sceneInfo;
     private final IUserNotificationListener listener;
     private WinkAdapter winkAdapter;
     private WeMoAdapter weMoAdapter;
     private HueAdapter hueAdapter;
-    private final DeviceDiscovery discovery;
     private SceneState mState = SceneState.Connecting;
     private LaunchSession mediaSession;
     private Timer durationTimer;
@@ -134,7 +134,7 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         this.name = name;
         this.config = config;
         this.listener = listener;
-        discovery = new DeviceDiscovery(config, this);
+        DeviceDiscovery discovery = new DeviceDiscovery(config, this);
         discovery.start();
         mState = SceneState.Connected;
     }
@@ -238,14 +238,6 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         }
     }
 
-
-    public void disconnect() {
-        discovery.stop();
-        mState = SceneState.Disconnect;
-        stop(false);
-    }
-
-
     synchronized void stop(boolean disableBluetooth) {
         mState = SceneState.Stop;
         if (disableBluetooth) {
@@ -305,7 +297,8 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
 
     void play(final MediaInfo mediaInfo, final long delay, boolean allDevices) {
-        if (!mState.equals(SceneState.Connected) && !mState.equals(SceneState.Stop) && !mState.equals(SceneState.PlaySmoothly)) {
+        if (!mState.equals(SceneState.Connected) && !mState.equals(SceneState.Stop)
+                && !mState.equals(SceneState.PlaySmoothly)) {
             return;
         }
         if (!mState.equals(SceneState.PlaySmoothly)) {
@@ -318,7 +311,8 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         if (allDevices) {
             // load image and set lamp color
             List<ImageInfo> images = mediaInfo.getImages();
-            Picasso.with(DiscoveryManager.getInstance().getContext()).load(images.get(0).getUrl()).into(onBitmapLoaded);
+            Picasso.with(DiscoveryManager.getInstance().getContext())
+                    .load(images.get(0).getUrl()).into(onBitmapLoaded);
 
             enableWinkDevices(true);
         }
@@ -361,7 +355,8 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
 
         // load image and set lamp color
         List<ImageInfo> images = mediaInfo.getImages();
-        Picasso.with(DiscoveryManager.getInstance().getContext()).load(images.get(0).getUrl()).into(onBitmapLoaded);
+        Picasso.with(DiscoveryManager.getInstance().getContext())
+                .load(images.get(0).getUrl()).into(onBitmapLoaded);
 
         for (final ConnectableDevice device : connectableDevices.values()) {
 
@@ -390,7 +385,7 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     private void stopMediaSmoothly() {
         stopColorTimer();
         startSmoothTimer(80, 10, false, -10);
-        startVolumeTimer(MAX_VOLUME, 0.01f, false,  -0.01f, new Runnable() {
+        startVolumeTimer(MAX_VOLUME, 0.01f, false, -0.01f, new Runnable() {
             @Override
             public void run() {
                 stop(true);
@@ -467,7 +462,8 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
     }
 
     @Override
-    public void onPairingRequired(final ConnectableDevice connectableDevice, DeviceService deviceService, DeviceService.PairingType pairingType) {
+    public void onPairingRequired(final ConnectableDevice connectableDevice,
+                                  DeviceService deviceService, DeviceService.PairingType pairingType) {
         if (listener != null && SceneConfig.contains(config, connectableDevice)) {
             Util.runOnUI(new Runnable() {
                 @Override
@@ -606,7 +602,8 @@ public class Scene implements IScene, ConnectableDeviceListener, DeviceDiscovery
         }
     }
 
-    private void startVolumeTimer(final float start, final float end, final boolean condGreater, final float incement, final Runnable runnable) {
+    private void startVolumeTimer(final float start, final float end, final boolean condGreater,
+                                  final float incement, final Runnable runnable) {
         volume = start;
         stopVolumeTimer();
         volumeTimer = new Timer();
