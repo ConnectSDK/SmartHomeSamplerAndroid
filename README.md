@@ -1,7 +1,26 @@
 #Smart Home Sampler App for Android
 
 ## About
+This app demonstrates a scenario of using various Smart Home devices in two home scenes. They represent a living room and a bedroom, each containing a media device, light bulbs, and possibly other devices. The supported devices come from different categories (media players, light bulbs, switches, and iBeacons) and multiple manufacturers. The scenario of the app is: you enter a room, which is detected by an iBeacon, a playlist starts to play on a TV or speaker, and the light bulbs change color to match one of the colors of the album art during playback. When moving to the other scene, the state is transfered there and the previous scene turns off.
+
 For information on Connect SDK, visit [http://connectsdk.com/discover/](http://connectsdk.com/discover/).
+
+## Prerequisites
+
+Required devices:
+
+* LG WebOS TV or DLNA-compatible media device for each scene (two total), such as Sonos.
+
+The app has been tested and works with these devices:
+
+* [LG WebOS 2014 TV](http://www.lg.com/us/experience-tvs/smart-tv)
+* [Sonos PLAY:1 speaker](http://www.sonos.com/sonos-shop/products/play1)
+* [Philips Hue hub and bulbs](http://www2.meethue.com/en-us/)
+* [Belkin WeMo Switch](http://www.belkin.com/us/p/F7C027fc/)
+* [Wink hub](http://www.wink.com/products/wink-hub/) + [GE link light bulb](http://gelinkbulbs.com)
+* [StickNFind iBeacons](https://www.sticknfind.com/sticknfind.aspx)
+
+**Important**: Make sure all the WiFi-supported devices (WebOS TV, Sonos speaker, Philips Hue hub, WeMo switch, and Wink hub) and your Android device with the app are connected to the same WiFi network. To configure the devices, you need to use their respective apps.
 
 ##Dependencies
 - Android SDK v21

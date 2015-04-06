@@ -126,7 +126,10 @@ public class SceneConfig {
     }
 
     public boolean isConfigured() {
-        return !devices.isEmpty() && (!bulbs.isEmpty() || !winkBulbs.isEmpty());
+        /**
+         * Only one media device is required for scene
+         */
+        return !devices.isEmpty();
     }
 
     public static class DeviceConfig implements Serializable {
