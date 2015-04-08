@@ -1,9 +1,23 @@
 #Smart Home Sampler App for Android
 
 ## About
-This app demonstrates a scenario of using various Smart Home devices in two home scenes. They represent a living room and a bedroom, each containing a media device, light bulbs, and possibly other devices. The supported devices come from different categories (media players, light bulbs, switches, and iBeacons) and multiple manufacturers. The scenario of the app is: you enter a room, which is detected by an iBeacon, a playlist starts to play on a TV or speaker, and the light bulbs change color to match one of the colors of the album art during playback. When moving to the other scene, the state is transfered there and the previous scene turns off.
 
-For information on Connect SDK, visit [http://connectsdk.com/discover/](http://connectsdk.com/discover/).
+This demo app demonstrates a scenario of using various Smart Home devices in two home scenes. They represent a living room and a family room, each containing a media device, light bulbs, and possibly other devices. The supported devices come from different categories (media players, light bulbs, switches, and iBeacons) and multiple manufacturers.
+
+We belive the Smart Homes of the future, are not going to be driven by devices from a single manufacturer, instead a network of devices from various manufacturers.
+
+The scenario of the app is:
+1. You enter the living room, which is detected by an iBeacon, 
+2. A playlist starts to play on a TV or speaker, and the light bulbs change color to match one of the colors of the album art during playback.
+3. Then the user moves from the living room scene to the family room scene.
+4. Where the session information is transfered from the living room to the family room.
+4.1 The devices in the living switch off and the session is picked up in the family room
+5. The user put the scene to sleep using voice command (to replicate control using Siri or Google Now or other voice engine/assitants)
+5.1 The speaker fades out  the music, while the LED bulb fade out and switch off.
+6. The Scene wakes up after a defined time - to mimic waking up from an alarm.
+6.1 The LEd Bulbs switch on along with speaker. 
+
+For additional information on Connect SDK, visit [http://connectsdk.com/discover/](http://connectsdk.com/discover/).
 
 ## Prerequisites
 
